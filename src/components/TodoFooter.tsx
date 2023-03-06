@@ -7,7 +7,7 @@ const TodoFooter = ({ nbTodo, onClearCompleted }: TodoFooterProps) => {
     return (
         <footer className="footer">
             <span className="todo-count">
-                <strong>{nbTodo}</strong> item left
+                <strong>{nbTodo}</strong> {nbTodo > 1 ? "items" : "item"} left
             </span>
             <button className="clear-completed" onClick={onClearCompleted}>
                 Clear completed

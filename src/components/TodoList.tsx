@@ -27,10 +27,7 @@ const TodoList = () => {
                 ...todoList,
                 { id: Date.now(), description: newValue, done: false },
             ]);
-            const inputEL = document.querySelector(
-                ".new-todo"
-            ) as HTMLInputElement;
-            inputEL.value = "";
+            (event.target as HTMLInputElement).value = "";
             setNewValue("");
         }
     };

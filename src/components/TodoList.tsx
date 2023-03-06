@@ -22,7 +22,7 @@ const TodoList = () => {
     };
 
     const createTodo = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter" && newValue.length >= 3) {
+        if (event.key === "Enter" && newValue.length > 0) {
             setTodoList([
                 ...todoList,
                 { id: Date.now(), description: newValue, done: false },

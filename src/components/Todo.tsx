@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+var classNames = require("classnames");
 
 type todoProps = {
     description: string;
@@ -15,12 +16,12 @@ const Todo = ({
     onChangeDone,
     isdone,
 }: todoProps) => {
-    const [done, setDone] = useState<boolean>(isdone);
+    // const [done, setDone] = useState<boolean>(isdone);
     const [editing, setEditing] = useState<boolean>(false);
     const [newDesc, setNewDesc] = useState<string>(description);
 
     const onClickDone = () => {
-        setDone(!done);
+        // setDone(!done);
         onChangeDone();
     };
 
@@ -33,27 +34,25 @@ const Todo = ({
     };
 
     const replaceDesc = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && newDesc.length > 3) {
+        if (e.key === "Enter" && newDesc.length > 0) {
             onEditDescription(newDesc);
             setEditing(false);
         }
     };
 
-    const setLiClass = (): string => {
-        const liClass = [];
-        if (done) liClass.push("completed");
-        if (editing) liClass.push("editing");
-        return liClass.join(" ");
-    };
+    const liClass = classNames({
+        completed: isdone,
+        editing: editing,
+    });
 
     return (
-        <li className={setLiClass()}>
+        <li className={liClass}>
             <div className="view">
                 <input
                     type="checkbox"
                     className="toggle"
                     onChange={onClickDone}
-                    checked={done}
+                    checked={isdone}
                 ></input>
                 <label onDoubleClick={onDoubleClick}>{description}</label>
                 <button onClick={() => onDelete()} className="destroy"></button>

@@ -11,7 +11,7 @@ interface Itodo {
 
 const TodoList = () => {
     const [todoList, setTodoList] = useState<Itodo[]>([
-        { id: 0, description: "finish this todo", done: true },
+        { id: 0, description: "finish this todo", done: false },
         { id: 1, description: "finish this todo too", done: false },
     ]);
 
@@ -116,11 +116,12 @@ const TodoList = () => {
                     {todoList.map((todo: Itodo) => (
                         <Todo
                             key={todo.id}
-                            id={todo.id}
                             description={todo.description}
-                            onEditDescription={onEditDescription}
-                            onDelete={deleteTodo}
-                            onChangeDone={onChangeDone}
+                            onEditDescription={(desc) =>
+                                onEditDescription(todo.id, desc)
+                            }
+                            onDelete={() => deleteTodo(todo.id)}
+                            onChangeDone={() => onChangeDone(todo.id)}
                             isdone={todo.done}
                         />
                     ))}

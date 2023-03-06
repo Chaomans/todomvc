@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 
 type todoProps = {
-    id: number;
     description: string;
-    onDelete: (id: number) => void;
-    onChangeDone: (id: number) => void;
-    onEditDescription: (id: number, desc: string) => void;
+    onDelete: () => void;
+    onChangeDone: () => void;
+    onEditDescription: (desc: string) => void;
     isdone: boolean;
 };
 
 const Todo = ({
-    id,
     description,
     onEditDescription,
     onDelete,
@@ -23,7 +21,7 @@ const Todo = ({
 
     const onClickDone = () => {
         setDone(!done);
-        onChangeDone(id);
+        onChangeDone();
     };
 
     const onDoubleClick = () => {
@@ -36,7 +34,7 @@ const Todo = ({
 
     const replaceDesc = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && newDesc.length > 3) {
-            onEditDescription(id, newDesc);
+            onEditDescription(newDesc);
             setEditing(false);
         }
     };
@@ -58,10 +56,7 @@ const Todo = ({
                     checked={done}
                 ></input>
                 <label onDoubleClick={onDoubleClick}>{description}</label>
-                <button
-                    onClick={() => onDelete(id)}
-                    className="destroy"
-                ></button>
+                <button onClick={() => onDelete()} className="destroy"></button>
             </div>
             <input
                 type="text"

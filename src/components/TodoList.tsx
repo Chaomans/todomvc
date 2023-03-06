@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Todo from "./Todo";
-import styles from "./styles/todoList.module.css";
+import TodoFooter from "./TodoFooter";
+import TodoInput from "./TodoInput";
 
 interface Itodo {
     id: number;
@@ -10,7 +11,7 @@ interface Itodo {
 
 const TodoList = () => {
     const [todoList, setTodoList] = useState<Itodo[]>([
-        { id: 0, description: "finish this todo", done: false },
+        { id: 0, description: "finish this todo", done: true },
         { id: 1, description: "finish this todo too", done: false },
     ]);
 
@@ -27,7 +28,7 @@ const TodoList = () => {
                 { id: Date.now(), description: newValue, done: false },
             ]);
             const inputEL = document.querySelector(
-                ".create-todo"
+                ".new-todo"
             ) as HTMLInputElement;
             inputEL.value = "";
             setNewValue("");
@@ -41,13 +42,20 @@ const TodoList = () => {
     const onChangeDone = (id: number) => {
         const doneTodo = todoList.find((todo) => todo.id === id) ?? null;
         if (doneTodo === null) return;
-        setTodoList([
-            ...todoList.filter((todo) => todo.id !== id),
-            {
-                ...doneTodo,
-                done: !doneTodo.done,
-            },
-        ]);
+        const doneTodoIndex =
+            todoList.findIndex((todo) => todo.id === id) ?? null;
+        const newTodoList: Itodo[] = [];
+        todoList.forEach((todo, i) => {
+            if (i === doneTodoIndex) {
+                newTodoList.push({
+                    ...todoList[doneTodoIndex],
+                    done: !doneTodo.done,
+                });
+            } else {
+                newTodoList.push(todo);
+            }
+        });
+        setTodoList(newTodoList);
     };
 
     const onEditDescription = (id: number, desc: string) => {
@@ -68,21 +76,44 @@ const TodoList = () => {
         setTodoList(newTodoList);
     };
 
+    const onToggleAll = () => {
+        const alldone = todoList.every((todo) => todo.done);
+        const newTodoList: Itodo[] = [];
+        if (alldone) {
+            todoList.forEach((todo) =>
+                newTodoList.push({
+                    ...todo,
+                    done: false,
+                })
+            );
+        } else {
+            todoList.forEach((todo) =>
+                newTodoList.push({
+                    ...todo,
+                    done: true,
+                })
+            );
+        }
+        setTodoList(newTodoList);
+    };
+
+    const onClearCompleted = () => {
+        setTodoList(todoList.filter((todo) => !todo.done));
+    };
+
     return (
-        <div className={styles.container}>
-            <h2>Just {todoList.length} left !</h2>
-            <div className={styles.inputContainer}>
+        <section className="todoapp">
+            <TodoInput createTodo={createTodo} onChange={onChange} />
+            <section className="main">
                 <input
-                    className={"create-todo " + styles.createTodoInput}
-                    type="text"
-                    onKeyDown={createTodo}
-                    onChange={onChange}
+                    type="checkbox"
+                    id="toggle-all"
+                    className="toggle-all"
+                    onChange={() => onToggleAll()}
                 />
-            </div>
-            <div className={styles.todolist}>
-                {todoList
-                    .filter((todo: Itodo) => !todo.done)
-                    .map((todo: Itodo) => (
+                <label htmlFor="toggle-all">Mark all as completed</label>
+                <ul className="todo-list">
+                    {todoList.map((todo: Itodo) => (
                         <Todo
                             key={todo.id}
                             id={todo.id}
@@ -93,21 +124,15 @@ const TodoList = () => {
                             isdone={todo.done}
                         />
                     ))}
-                {todoList
-                    .filter((todo: Itodo) => todo.done)
-                    .map((todo: Itodo) => (
-                        <Todo
-                            key={todo.id}
-                            id={todo.id}
-                            description={todo.description}
-                            onEditDescription={onEditDescription}
-                            onDelete={deleteTodo}
-                            onChangeDone={onChangeDone}
-                            isdone={todo.done}
-                        />
-                    ))}
-            </div>
-        </div>
+                </ul>
+            </section>
+            {todoList.length > 0 && (
+                <TodoFooter
+                    nbTodo={todoList.length}
+                    onClearCompleted={onClearCompleted}
+                />
+            )}
+        </section>
     );
 };
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./styles/todo.module.css";
 
 type todoProps = {
     id: number;
@@ -19,8 +18,8 @@ const Todo = ({
     isdone,
 }: todoProps) => {
     const [done, setDone] = useState<boolean>(isdone);
-    const [edit, setEdit] = useState<boolean>(false);
-    const [newDesc, setNewDesc] = useState<string>("");
+    const [editing, setEditing] = useState<boolean>(false);
+    const [newDesc, setNewDesc] = useState<string>(description);
 
     const onClickDone = () => {
         setDone(!done);
@@ -28,7 +27,7 @@ const Todo = ({
     };
 
     const onDoubleClick = () => {
-        setEdit(true);
+        setEditing(true);
     };
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,43 +36,42 @@ const Todo = ({
 
     const replaceDesc = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && newDesc.length > 3) {
-            setEdit(false);
             onEditDescription(id, newDesc);
+            setEditing(false);
         }
     };
 
-    const getPClass = () => {
-        const base = done ? styles.pDone : styles.p;
-        return edit ? `${base} ${styles.pEdit}` : base;
+    const setLiClass = (): string => {
+        const liClass = [];
+        if (done) liClass.push("completed");
+        if (editing) liClass.push("editing");
+        return liClass.join(" ");
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.subContainer}>
-                <button
-                    className={done ? styles.buttonDone : styles.buttonComplete}
-                    onClick={() => onClickDone()}
-                >
-                    ✔
-                </button>
-                <p className={getPClass()} onDoubleClick={onDoubleClick}>
-                    {description}
-                </p>
+        <li className={setLiClass()}>
+            <div className="view">
                 <input
-                    type="text"
-                    autoFocus
-                    className={edit ? styles.editOn : styles.editOff}
-                    onKeyDown={replaceDesc}
-                    onChange={onChange}
-                />
+                    type="checkbox"
+                    className="toggle"
+                    onChange={onClickDone}
+                    checked={done}
+                ></input>
+                <label onDoubleClick={onDoubleClick}>{description}</label>
+                <button
+                    onClick={() => onDelete(id)}
+                    className="destroy"
+                ></button>
             </div>
-            <button
-                className={done ? styles.buttonDone : styles.buttonDelete}
-                onClick={() => onDelete(id)}
-            >
-                X
-            </button>
-        </div>
+            <input
+                type="text"
+                className="edit"
+                autoFocus
+                onKeyDown={replaceDesc}
+                onChange={onChange}
+                value={newDesc}
+            />
+        </li>
     );
 };
 

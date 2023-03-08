@@ -20,11 +20,6 @@ const Todo = ({
     const [editing, setEditing] = useState<boolean>(false);
     const [newDesc, setNewDesc] = useState<string>(description);
 
-    const onClickDone = () => {
-        // setDone(!done);
-        onChangeDone();
-    };
-
     const onDoubleClick = () => {
         setEditing(true);
     };
@@ -51,7 +46,7 @@ const Todo = ({
                 <input
                     type="checkbox"
                     className="toggle"
-                    onChange={onClickDone}
+                    onChange={onChangeDone}
                     checked={isdone}
                 ></input>
                 <label onDoubleClick={onDoubleClick}>{description}</label>

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoFooter component Should display properly 1`] = `
+<DocumentFragment>
+  <footer
+    class="footer"
+  >
+    <span
+      class="todo-count"
+    >
+      <strong>
+        1
+      </strong>
+       item left
+    </span>
+    <button
+      class="clear-completed"
+    >
+      Clear completed
+    </button>
+  </footer>
+</DocumentFragment>
+`;

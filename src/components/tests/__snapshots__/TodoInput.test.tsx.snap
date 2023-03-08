@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoInput component Should render properly 1`] = `
+<DocumentFragment>
+  <input
+    class="new-todo"
+    placeholder="Whats's next"
+    type="text"
+  />
+</DocumentFragment>
+`;

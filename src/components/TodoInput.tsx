@@ -5,8 +5,6 @@ type TodoInputProps = {
 
 const TodoInput = ({ createTodo, onChange }: TodoInputProps) => {
     return (
-        <header className="header">
-            <h1>todos</h1>
             <input
                 type="text"
                 placeholder="Whats's next"
@@ -15,7 +13,6 @@ const TodoInput = ({ createTodo, onChange }: TodoInputProps) => {
                 onChange={onChange}
                 autoFocus
             />
-        </header>
     );
 };
 

@@ -100,7 +100,10 @@ const TodoList = () => {
 
     return (
         <section className="todoapp">
+            <header className="header">
+                <h1>todos</h1>
             <TodoInput createTodo={createTodo} onChange={onChange} />
+            </header>
             <section className="main">
                 <input
                     type="checkbox"

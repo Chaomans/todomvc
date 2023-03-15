@@ -1,18 +1,49 @@
+import { Filter } from "./models/models";
+
 type TodoFooterProps = {
-    nbTodo: number;
+    remainingTodos: number;
+    completedTodos: number;
+    activeFilter: string;
+    filters: Filter[];
     onClearCompleted: () => void;
+    onChangeActiveFilter: (filterName: string) => void;
 };
 
-const TodoFooter = ({ nbTodo, onClearCompleted }: TodoFooterProps) => {
+const TodoFooter = ({ remainingTodos, completedTodos, activeFilter, filters, onClearCompleted, onChangeActiveFilter }: TodoFooterProps) => {
+
+    const beforeChangeActiveFilter = (filter: string) =>{
+        onChangeActiveFilter(filter);
+    }
+
     return (
         <footer className="footer">
             <span className="todo-count">
-                <strong>{nbTodo}</strong>{" "}
-                {nbTodo === 0 || nbTodo > 1 ? "items" : "item"} left
+                <strong>{remainingTodos}</strong>{" "}
+                {remainingTodos === 0 || remainingTodos > 1 ? "items" : "item"} left
             </span>
-            <button className="clear-completed" onClick={onClearCompleted}>
-                Clear completed
-            </button>
+            {filters.length > 0 && (
+                <ul className="filters">
+                    {filters.map((filter) =>(
+                        <li key={ filter.value }>
+                            <a 
+                                href="/" 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    beforeChangeActiveFilter(filter.value)
+                                }} 
+                                className={activeFilter === filter.value ? "selected": ""}
+                            >
+                                {filter.name}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            )}
+            {completedTodos > 0 && (
+                <button className="clear-completed" onClick={() => onClearCompleted()}>
+                    Clear completed
+                </button>
+            )}
         </footer>
     );
 };

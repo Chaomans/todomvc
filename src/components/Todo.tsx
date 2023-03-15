@@ -1,66 +1,74 @@
-import React, { useState } from "react";
-var classNames = require("classnames");
+import { useState } from "react";
 
 type todoProps = {
     description: string;
     onDelete: () => void;
-    onChangeDone: () => void;
+    onChangeDone: (isDone: boolean) => void;
     onEditDescription: (desc: string) => void;
+    onSetEditing: (editing: boolean) => void;
     isdone: boolean;
 };
 
 const Todo = ({
     description,
+    isdone,
     onEditDescription,
     onDelete,
     onChangeDone,
-    isdone,
+    onSetEditing,
 }: todoProps) => {
-    // const [done, setDone] = useState<boolean>(isdone);
-    const [editing, setEditing] = useState<boolean>(false);
-    const [newDesc, setNewDesc] = useState<string>(description);
+    const [newDesc, setNewDesc] = useState(description);
+    const [editing, setEditing] = useState(false);
 
-    const onDoubleClick = () => {
-        setEditing(true);
+    const onEditing = (newDescription: string) => {
+        setNewDesc(newDescription);
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewDesc(e.target.value);
-    };
-
-    const replaceDesc = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && newDesc.length > 0) {
-            onEditDescription(newDesc);
+    const replaceDesc = (key: string) => {
+        if (key === "Enter") {
+            if(newDesc.trim().length > 0){
+                onEditDescription(newDesc.trim());
+                setEditing(false);
+                onSetEditing(false);
+            } else {
+                onDelete();
+            }
+        }
+        if(key === "Escape") {
+            onSetEditing(false);
             setEditing(false);
+            setNewDesc(description);
         }
     };
 
-    const liClass = classNames({
-        completed: isdone,
-        editing: editing,
-    });
+    const handleDoubleClick = () => {
+        onSetEditing(true);
+        setEditing(true);
+    }
 
     return (
-        <li className={liClass}>
-            <div className="view">
+        <>
+            {!editing && (<div className="view">
                 <input
                     type="checkbox"
                     className="toggle"
-                    onChange={onChangeDone}
+                    onChange={(e) => onChangeDone(e.target.checked)}
                     checked={isdone}
                 ></input>
-                <label onDoubleClick={onDoubleClick}>{description}</label>
+                <label onDoubleClick={() => handleDoubleClick()}>{description}</label>
                 <button onClick={() => onDelete()} className="destroy"></button>
-            </div>
-            <input
-                type="text"
-                className="edit"
-                autoFocus
-                onKeyDown={replaceDesc}
-                onChange={onChange}
-                value={newDesc}
-            />
-        </li>
+            </div>)}
+            { editing && (
+                <input
+                    type="text"
+                    className="edit"
+                    onKeyDown={(e) => replaceDesc(e.key)}
+                    onChange={(e) => onEditing(e.target.value)}
+                    value={newDesc}
+                    autoFocus
+                />
+            )}
+        </>
     );
 };
 

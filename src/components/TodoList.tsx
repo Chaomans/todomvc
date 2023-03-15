@@ -1,139 +1,49 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { TodoItem } from "./models/models";
 import Todo from "./Todo";
-import TodoFooter from "./TodoFooter";
-import TodoInput from "./TodoInput";
 
-interface Itodo {
-    id: number;
-    description: string;
-    done: boolean;
+var classNames = require("classnames");
+
+type TodoListProps = {
+    todos: TodoItem[];
+    onEditDescription: (id: string, desc: string) => void;
+    onDelete: (id: string) => void;
+    onChangeDoneValue: (id: string, done: boolean) => void;
 }
 
-const TodoList = () => {
-    const [todoList, setTodoList] = useState<Itodo[]>([
-        { id: 0, description: "finish this todo", done: false },
-        { id: 1, description: "finish this todo too", done: false },
-    ]);
+const TodoList = ({ todos, onEditDescription, onDelete, onChangeDoneValue}: TodoListProps) => {
 
-    const [newValue, setNewValue] = useState<string>("");
+    const [isEditing, setIsEditing] = useState("");
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewValue(e.target.value);
-    };
-
-    const createTodo = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter" && newValue.length > 0) {
-            setTodoList([
-                ...todoList,
-                { id: Date.now(), description: newValue, done: false },
-            ]);
-            (event.target as HTMLInputElement).value = "";
-            setNewValue("");
-        }
-    };
-
-    const deleteTodo = (id: number) => {
-        setTodoList(todoList.filter((todo) => todo.id !== id));
-    };
-
-    const onChangeDone = (id: number) => {
-        const doneTodo = todoList.find((todo) => todo.id === id) ?? null;
-        if (doneTodo === null) return;
-        const doneTodoIndex =
-            todoList.findIndex((todo) => todo.id === id) ?? null;
-        const newTodoList: Itodo[] = [];
-        todoList.forEach((todo, i) => {
-            if (i === doneTodoIndex) {
-                newTodoList.push({
-                    ...todoList[doneTodoIndex],
-                    done: !doneTodo.done,
-                });
-            } else {
-                newTodoList.push(todo);
-            }
-        });
-        setTodoList(newTodoList);
-    };
-
-    const onEditDescription = (id: number, desc: string) => {
-        const toEditIndex =
-            todoList.findIndex((todo) => todo.id === id) ?? null;
-        if (toEditIndex === null) return;
-        const newTodoList: Itodo[] = [];
-        todoList.forEach((todo, i) => {
-            if (i === toEditIndex) {
-                newTodoList.push({
-                    ...todoList[toEditIndex],
-                    description: desc,
-                });
-            } else {
-                newTodoList.push(todo);
-            }
-        });
-        setTodoList(newTodoList);
-    };
-
-    const onToggleAll = () => {
-        const alldone = todoList.every((todo) => todo.done);
-        const newTodoList: Itodo[] = [];
-        if (alldone) {
-            todoList.forEach((todo) =>
-                newTodoList.push({
-                    ...todo,
-                    done: false,
-                })
-            );
+    const handleSetEditing = (id: string, doSet: boolean) => {
+        if(doSet){
+            setIsEditing(id);
         } else {
-            todoList.forEach((todo) =>
-                newTodoList.push({
-                    ...todo,
-                    done: true,
-                })
-            );
+            setIsEditing("");
         }
-        setTodoList(newTodoList);
-    };
-
-    const onClearCompleted = () => {
-        setTodoList(todoList.filter((todo) => !todo.done));
-    };
+    }
 
     return (
-        <section className="todoapp">
-            <header className="header">
-                <h1>todos</h1>
-            <TodoInput createTodo={createTodo} onChange={onChange} />
-            </header>
-            <section className="main">
-                <input
-                    type="checkbox"
-                    id="toggle-all"
-                    className="toggle-all"
-                    onChange={() => onToggleAll()}
-                />
-                <label htmlFor="toggle-all">Mark all as completed</label>
+            
                 <ul className="todo-list">
-                    {todoList.map((todo: Itodo) => (
-                        <Todo
-                            key={todo.id}
-                            description={todo.description}
-                            onEditDescription={(desc) =>
-                                onEditDescription(todo.id, desc)
-                            }
-                            onDelete={() => deleteTodo(todo.id)}
-                            onChangeDone={() => onChangeDone(todo.id)}
-                            isdone={todo.done}
-                        />
+                    {todos.length > 0 && todos.map((todo) => (
+                        <li key={todo.id} className={classNames({
+                            completed: todo.done,
+                            editing: isEditing === todo.id,
+                        })}>
+                            <Todo
+                                description={todo.description}
+                                isdone={todo.done}
+                                onSetEditing={(edit) => handleSetEditing(todo.id, edit)}
+                                onEditDescription={(desc) =>
+                                    onEditDescription(todo.id, desc)
+                                }
+                                onDelete={() => onDelete(todo.id)}
+                                onChangeDone={(done) => onChangeDoneValue(todo.id, done)}
+                            />
+                        </li>
                     ))}
                 </ul>
-            </section>
-            {todoList.length > 0 && (
-                <TodoFooter
-                    nbTodo={todoList.length}
-                    onClearCompleted={onClearCompleted}
-                />
-            )}
-        </section>
     );
 };
 

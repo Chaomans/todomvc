@@ -1,10 +1,10 @@
 import "./App.css";
-import TodoContainer from "./components/TodoContainer";
+import TodoPage from "./components/TodoPage";
 
 function App() {
     return (
         <div className="App">
-            <TodoContainer />
+            <TodoPage />
         </div>
     );
 }

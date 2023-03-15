@@ -1,18 +1,31 @@
+import { useState } from "react";
+
 type TodoInputProps = {
-    createTodo: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    createTodo: (description: string) => void;
 };
 
-const TodoInput = ({ createTodo, onChange }: TodoInputProps) => {
+const TodoInput = ({ createTodo }: TodoInputProps) => {
+
+    const [newValue, setNewValue] = useState("");
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === "Enter") {
+            if (newValue.trim().length) createTodo(newValue.trim());
+            e.currentTarget.value = "";
+        }
+    }
     return (
+        <header className="header">
+            <h1>todos</h1>
             <input
                 type="text"
-                placeholder="Whats's next"
+                placeholder="What's next ?"
                 className="new-todo"
-                onKeyDown={createTodo}
-                onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e) }
+                onChange={(e) => setNewValue(e.target.value)}
                 autoFocus
-            />
+                />
+        </header>
     );
 };
 

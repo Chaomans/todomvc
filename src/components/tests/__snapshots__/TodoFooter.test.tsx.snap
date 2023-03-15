@@ -13,11 +13,34 @@ exports[`TodoFooter component Should display properly 1`] = `
       </strong>
        item left
     </span>
-    <button
-      class="clear-completed"
+    <ul
+      class="filters"
     >
-      Clear completed
-    </button>
+      <li>
+        <a
+          class="selected"
+          href="/"
+        >
+          All
+        </a>
+      </li>
+      <li>
+        <a
+          class=""
+          href="/"
+        >
+          Active
+        </a>
+      </li>
+      <li>
+        <a
+          class=""
+          href="/"
+        >
+          Complete
+        </a>
+      </li>
+    </ul>
   </footer>
 </DocumentFragment>
 `;

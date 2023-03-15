@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoPage component Should render properly 1`] = `
+<DocumentFragment>
+  <section
+    class="todoapp"
+  >
+    <header
+      class="header"
+    >
+      <h1>
+        todos
+      </h1>
+      <input
+        class="new-todo"
+        placeholder="What's next ?"
+        type="text"
+      />
+    </header>
+    <section
+      class="main"
+    >
+      <input
+        class="toggle-all"
+        id="toggle-all"
+        type="checkbox"
+      />
+      <label
+        for="toggle-all"
+      >
+        Mark all as completed
+      </label>
+    </section>
+  </section>
+</DocumentFragment>
+`;

@@ -2,28 +2,19 @@
 
 exports[`Todo component should render properly 1`] = `
 <DocumentFragment>
-  <li
-    class=""
+  <div
+    class="view"
   >
-    <div
-      class="view"
-    >
-      <input
-        class="toggle"
-        type="checkbox"
-      />
-      <label>
-        First thing to do
-      </label>
-      <button
-        class="destroy"
-      />
-    </div>
     <input
-      class="edit"
-      type="text"
-      value="First thing to do"
+      class="toggle"
+      type="checkbox"
     />
-  </li>
+    <label>
+      First thing to do
+    </label>
+    <button
+      class="destroy"
+    />
+  </div>
 </DocumentFragment>
 `;

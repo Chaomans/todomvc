@@ -2,10 +2,17 @@
 
 exports[`TodoInput component Should render properly 1`] = `
 <DocumentFragment>
-  <input
-    class="new-todo"
-    placeholder="Whats's next"
-    type="text"
-  />
+  <header
+    class="header"
+  >
+    <h1>
+      todos
+    </h1>
+    <input
+      class="new-todo"
+      placeholder="What's next ?"
+      type="text"
+    />
+  </header>
 </DocumentFragment>
 `;

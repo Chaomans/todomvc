@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoList component Should render properly 1`] = `
+<DocumentFragment>
+  <ul
+    class="todo-list"
+  >
+    <li
+      class=""
+    >
+      <div
+        class="view"
+      >
+        <input
+          class="toggle"
+          type="checkbox"
+        />
+        <label>
+          Eat a rainbow
+        </label>
+        <button
+          class="destroy"
+        />
+      </div>
+    </li>
+    <li
+      class="completed"
+    >
+      <div
+        class="view"
+      >
+        <input
+          checked=""
+          class="toggle"
+          type="checkbox"
+        />
+        <label>
+          Play rhythm game
+        </label>
+        <button
+          class="destroy"
+        />
+      </div>
+    </li>
+  </ul>
+</DocumentFragment>
+`;
